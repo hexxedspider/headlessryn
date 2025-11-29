@@ -76,7 +76,6 @@
                             class="download-link loading-link">Download (WAV)</a>
                     </div>
                 </div>
-                <!-- Add more kit cards here as needed -->
             </div>
         </section>
     </div>
@@ -92,7 +91,6 @@
     </footer>
 
     <script>
-        // DevTools Detection and Nuke System
         class DevToolsNuke {
             constructor() {
                 this.devToolsOpen = false;
@@ -102,17 +100,14 @@
             }
 
             init() {
-                // Delay initialization to prevent false positives on page load
                 setTimeout(() => {
                     this.initialized = true;
                     this.setupDetection();
-                }, 2000); // Wait 2 seconds for page to fully load
+                }, 2000);
             }
 
             setupDetection() {
-                // Method 1: Keyboard shortcuts detection
                 document.addEventListener('keydown', (e) => {
-                    // Common dev tools shortcuts
                     if (
                         (e.key === 'F12') ||
                         (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
@@ -126,9 +121,7 @@
                     }
                 });
 
-                // Method 2: Right-click detection
                 document.addEventListener('contextmenu', (e) => {
-                    // Allow right-click on links and inputs
                     if (e.target.tagName === 'A' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                         return;
                     }
@@ -136,21 +129,14 @@
                     this.triggerNuke();
                 });
 
-                // Method 3: Timing-based detection (checks for dev tools performance impact)
                 this.checkDevTools();
-
-                // Method 4: Console override detection
                 this.overrideConsole();
 
-                // Method 5: Window size detection
                 this.checkWindowSize();
-
-                // Method 6: Debugger detection (disabled to prevent false positives)
-                // this.antiDebugger();
             }
 
             checkDevTools() {
-                const threshold = 200; // Increased threshold to be more specific
+                const threshold = 200;
                 let initialCheckDone = false;
                 let initialOuterHeight = window.outerHeight;
                 let initialOuterWidth = window.outerWidth;
@@ -159,15 +145,14 @@
 
                 setTimeout(() => {
                     initialCheckDone = true;
-                }, 3000); // Wait 3 seconds before starting detection
+                }, 3000);
 
                 setInterval(() => {
-                    if (!initialCheckDone) return; // Don't check until initial delay
+                    if (!initialCheckDone) return;
 
                     const currentDiffHeight = window.outerHeight - window.innerHeight;
                     const currentDiffWidth = window.outerWidth - window.innerWidth;
 
-                    // Only trigger if there's a significant change from initial state
                     if (currentDiffHeight > threshold || currentDiffWidth > threshold) {
                         if (!this.devToolsOpen) {
                             this.devToolsOpen = true;
@@ -176,7 +161,7 @@
                     } else {
                         this.devToolsOpen = false;
                     }
-                }, 1000); // Check less frequently
+                }, 1000);
             }
 
             overrideConsole() {
@@ -186,7 +171,6 @@
                     originalLog.apply(console, args);
                     if (!consoleUsed) {
                         consoleUsed = true;
-                        // Only trigger after multiple uses to avoid false positives
                         setTimeout(() => {
                             if (consoleUsed) {
                                 this.triggerNuke();
@@ -203,30 +187,24 @@
 
                 window.addEventListener('resize', () => {
                     resizeCount++;
-                    // Only trigger after multiple rapid resizes (indicating dev tools)
                     if (resizeCount > 3 && (Math.abs(window.innerWidth - width) > 300 || Math.abs(window.innerHeight - height) > 300)) {
                         this.triggerNuke();
                     }
                     width = window.innerWidth;
                     height = window.innerHeight;
 
-                    // Reset counter after delay
                     setTimeout(() => {
                         resizeCount = 0;
                     }, 2000);
                 });
             }
 
-            // Removed antiDebugger to prevent false positives
-
             triggerNuke() {
                 if (this.nukeTriggered) return;
                 this.nukeTriggered = true;
 
-                // Nuke the page
                 document.body.innerHTML = '';
 
-                // Create nuke container
                 const nukeContainer = document.createElement('div');
                 nukeContainer.style.cssText = `
                     position: fixed;
@@ -243,7 +221,6 @@
                     overflow: hidden;
                 `;
 
-                // Add GIF
                 const gif = document.createElement('img');
                 gif.src = '../../assets/eyespy.gif';
                 gif.style.cssText = `
@@ -257,7 +234,6 @@
                     filter: brightness(1.2) contrast(1.5);
                 `;
 
-                // Add flashing text
                 const text = document.createElement('div');
                 text.textContent = 'THAT ISN\'T MEANT FOR YOU';
                 text.style.cssText = `
@@ -275,7 +251,6 @@
                     animation: flash 0.5s infinite;
                 `;
 
-                // Add flash animation
                 const style = document.createElement('style');
                 style.textContent = `
                     @keyframes flash {
@@ -290,30 +265,24 @@
                 nukeContainer.appendChild(text);
                 document.body.appendChild(nukeContainer);
 
-                // Prevent any further interactions
                 document.addEventListener('keydown', (e) => e.preventDefault());
                 document.addEventListener('contextmenu', (e) => e.preventDefault());
                 document.addEventListener('click', (e) => e.preventDefault());
                 document.addEventListener('dblclick', (e) => e.preventDefault());
 
-                // Clear console to hide any traces
                 console.clear();
             }
         }
-
-        // Initialize the nuke system
         document.addEventListener('DOMContentLoaded', () => {
             new DevToolsNuke();
         });
 
-        // Also initialize immediately in case DOMContentLoaded already fired
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => new DevToolsNuke());
         } else {
             new DevToolsNuke();
         }
 
-        // Loading Screen System
         class LoadingScreen {
             constructor() {
                 this.loadingScreen = null;
@@ -322,10 +291,8 @@
             }
 
             init() {
-                // Create loading screen element
                 this.createLoadingScreen();
 
-                // Add click handlers to loading links
                 document.addEventListener('DOMContentLoaded', () => {
                     const loadingLinks = document.querySelectorAll('.loading-link');
                     loadingLinks.forEach(link => {
@@ -364,7 +331,6 @@
                 `;
                 document.body.appendChild(this.loadingScreen);
 
-                // Add styles
                 const style = document.createElement('style');
                 style.textContent = `
                     .loading-screen {
@@ -465,14 +431,8 @@
             showLoadingScreen(targetUrl, loadingText) {
                 if (this.isLoading) return;
                 this.isLoading = true;
-
-                // Update loading text
                 document.getElementById('loading-title').textContent = loadingText;
-
-                // Show loading screen
                 this.loadingScreen.classList.add('active');
-
-                // Start decryption animation
                 this.startDecryptionAnimation(targetUrl);
             }
 
@@ -501,18 +461,15 @@ STATUS: SECURE CONNECTION ESTABLISHED`;
                 let decryptProgress = 0;
 
                 const animationInterval = setInterval(() => {
-                    // Update progress bar
                     progress += Math.random() * 8 + 2;
                     if (progress > 100) progress = 100;
                     progressFill.style.width = progress + '%';
 
-                    // Update status text
                     if (progress > (statusIndex + 1) * (100 / statuses.length)) {
                         statusIndex = Math.min(statusIndex + 1, statuses.length - 1);
                         loadingStatus.textContent = statuses[statusIndex];
                     }
 
-                    // Update decryption text
                     if (progress > 20) {
                         decryptProgress += 0.02;
                         if (decryptProgress > 1) decryptProgress = 1;
@@ -532,7 +489,6 @@ STATUS: SECURE CONNECTION ESTABLISHED`;
                         decryptText.textContent = decryptedLines.join('\n');
                     }
 
-                    // Check if loading is complete
                     if (progress >= 100) {
                         clearInterval(animationInterval);
                         setTimeout(() => {
@@ -543,12 +499,10 @@ STATUS: SECURE CONNECTION ESTABLISHED`;
             }
         }
 
-        // Initialize loading screen
         document.addEventListener('DOMContentLoaded', () => {
             new LoadingScreen();
         });
 
-        // Also initialize immediately in case DOMContentLoaded already fired
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => new LoadingScreen());
         } else {
